@@ -6,27 +6,33 @@ Created on Sat Aug  4 17:31:10 2018
 @author: eikegroen
 """
 import numpy as np 
-import scipy as sc
-from scipy.linalg import eigh_tridiagonal
+import scipy.linalg as sclin
 from scipy.interpolate import griddata
 start = -2
-stop = 2
-M = 2.0
-n = 10
+stop = 2 #Intervall 
+M = 2.0 #mass of the Objekt 
+n = 1998 
 h = 4.0/n
-inttype = 'linear'
-a = 1/(M*h*h)
-dx = np.linspace(start,stop,n+1)
+inttype = 'linear' #type of interpolation
+a = 1/(M*h**2)
+x = np.linspace(start,stop,n+1)
 Vx = np.array([-2.0,2.0])
 Vy = np.array([0.0,0.0])
-grid=griddata(Vx,Vy,dx,method=inttype)
-fvalue=1
-lvalue=7
-d=grid+a
-e=np.zeros(n)+(-0.5)*a
-ev=eigh_tridiagonal(d,e,select='a')
+fvalue=0
+lvalue=0
+def Eigen(Vx,Vy,x,inttype,fvalue,lvalue,n):
+    grid=griddata(Vx,Vy,x,method=inttype)
+    d=grid+a
+    e=np.zeros(n)+(-0.5)*a
+    eev=sclin.eigh_tridiagonal(d,e,select='i',select_range=(fvalue,lvalue))
+    return eev
+aa=Eigen(Vx,Vy,x,inttype,fvalue,lvalue,n)
+ev=aa[0]
+evec=aa[1]
 print(ev)
-
+import matplotlib.pyplot as plt
+plt.plot(x,evec)
+plt.show()
 
 
 
