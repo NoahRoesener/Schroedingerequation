@@ -9,9 +9,10 @@ import numpy as np
 import scipy
 import scipy.linalg as sclin
 from scipy.interpolate import griddata
+import DataInput as di
 start = -20
 stop = 20 #Intervall 
-M = 4.0 #mass of the object 
+M = float(getMass()) #mass of the object 
 n = 1998 
 h = 40.0/n
 inttype = 'linear' #type of interpolation
@@ -32,10 +33,10 @@ def Eigen(Vx,Vy,x,inttype,fvalue,lvalue,n):
 aa=Eigen(Vx,Vy,x,inttype,fvalue,lvalue,n)
 ev=aa[0]
 evec=aa[1]
-print(ev)
+
 import matplotlib.pyplot as plt
 plt.plot(x,evec)
-plt.show()
+
 
 
 
