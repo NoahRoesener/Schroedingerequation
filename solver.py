@@ -6,6 +6,7 @@ Created on Sat Aug  4 17:31:10 2018
 @author: eikegroen
 """
 import numpy as np 
+import scipy
 import scipy.linalg as sclin
 from scipy.interpolate import griddata
 start = -20
