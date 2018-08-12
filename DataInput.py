@@ -7,7 +7,7 @@ Created on Wed Aug  8 20:52:36 2018
 with open('schroedinger.inp', 'r') as f:
     content = f.readlines()
 
-datalines=[]
+datalines=[]  
 
 for line in content:
     newline = line.replace('\n','')
@@ -19,7 +19,7 @@ for line in content:
 
 def getMass():
     mass=float(datalines[0])
-    return(mass)
+    return(float(mass))
     
 def getXMax():
     XMax=datalines[1].split()
@@ -33,17 +33,18 @@ def getXMin():
 
 def getNumOfPoints():
     nPoints=datalines[1].split()
-    nPoints=float(nPoints[2])
+    nPoints=int(nPoints[2])
     return(nPoints)
+
 
 def getFirstEigen():
     fEigen=datalines[2].split()
-    fEigen=float(fEigen[0])
+    fEigen=int(fEigen[0])
     return(fEigen)
 
 def getLastEigen():
     lEigen=datalines[2].split()
-    lEigen=float(lEigen[1])
+    lEigen=int(lEigen[1])
     return(lEigen)
     
 def interpolationType():
@@ -52,4 +53,5 @@ def interpolationType():
 
 def interPoints():
     interPoints=float(datalines[4])
-    return(interPoints)    
+    return(interPoints)
+

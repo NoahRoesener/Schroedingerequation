@@ -11,18 +11,18 @@ from scipy import linalg as sclin
 from scipy.linalg import eigh_tridiagonal
 from scipy.interpolate import griddata
 import DataInput as di
-start = -20
-stop = 20 #Intervall 
-M = float(getMass()) #mass of the object 
-n = 1998 
-h = 40.0/n
-inttype = 'linear' #type of interpolation
+start = getXMin()
+stop = getXMax() 
+M = getMass() #mass of the object 
+n = getNumOfPoints()-1 
+h = 4.0/n
+inttype = interpolationType() #type of interpolation
 a = 1/(M*h**2)
-x = np.linspace(start,stop,n+1)
-Vx = np.array([-20.0,-10.0,0.0,10.0,20.0])
-Vy = np.array([35.0,0.0,2.0,0.0,35.0])
-fvalue=2
-lvalue=2
+x = np.linspace(stop,start,n+1)
+Vx = np.array([-2.0,2.0])
+Vy = np.array([0.0,0.0])
+fvalue=0
+lvalue=0
 nev=lvalue-fvalue 
 def Eigen(Vx,Vy,x,inttype,fvalue,lvalue,n):
     grid=griddata(Vx,Vy,x,method=inttype)
@@ -34,7 +34,7 @@ def Eigen(Vx,Vy,x,inttype,fvalue,lvalue,n):
 aa=Eigen(Vx,Vy,x,inttype,fvalue,lvalue,n)
 ev=aa[0]
 evec=aa[1]
-
+print(aa)
 import matplotlib.pyplot as plt
 plt.plot(x,evec)
 
