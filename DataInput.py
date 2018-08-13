@@ -49,7 +49,11 @@ def getLastEigen():
     
 def interpolationType():
     interType=datalines[3]
-    return(interType)
+    if intertype == 'cspline':
+        return('cubic')
+    else:
+        return(interType)
+    
 
 def interPoints():
     interPoints=float(datalines[4])

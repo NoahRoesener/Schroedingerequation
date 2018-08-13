@@ -21,22 +21,33 @@ a = 1/(M*h**2)
 x = np.linspace(stop,start,n+1)
 Vx = np.array([-2.0,2.0])
 Vy = np.array([0.0,0.0])
-fvalue=0
-lvalue=0
+fvalue=2
+lvalue=2
 nev=lvalue-fvalue 
 def Eigen(Vx,Vy,x,inttype,fvalue,lvalue,n):
-    grid=griddata(Vx,Vy,x,method=inttype)
-    d=grid+a
-    e=np.zeros(n)+(-0.5)*a
-    eev=sclin.eigh_tridiagonal(d,e,select='i',select_range=(fvalue,lvalue))
-    return eev
-    
+    if inttype == 'cubic' or 'linear':
+        grid=griddata(Vx,Vy,x,method=inttype)
+    elif inttype == 'polynomial':
+        coefficients=np.polyfit(Vx,Vy,2)
+        grid=np.polyval(coefficients,x)
+ d=grid+a
+ e=np.zeros(n)+(-0.5)*a
+ eev=sclin.eigh_tridiagonal(d,e,select='i',select_range=(fvalue,lvalue))
+ return eev
 aa=Eigen(Vx,Vy,x,inttype,fvalue,lvalue,n)
 ev=aa[0]
 evec=aa[1]
-print(aa)
+print(evec)
+def normalize(evec):
+    norm = np.linalg.norm(evec)
+    if norm == 0: 
+       return evec
+    else:
+        return evec / norm 
+nevec=normalize(evec)
+print(nevec)
 import matplotlib.pyplot as plt
-plt.plot(x,evec)
+plt.plot(x,nevec)
 
 
 
