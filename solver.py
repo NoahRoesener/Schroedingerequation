@@ -30,8 +30,8 @@ def Eigen(Vx,Vy,x,inttype,fvalue,lvalue,n):
     elif inttype == 'polynomial':
         coefficients=np.polyfit(Vx,Vy,2)
         grid=np.polyval(coefficients,x)
- d=grid+a
- e=np.zeros(n)+(-0.5)*a
+ #d=1+a
+ #e=np.zeros(n)+(-0.5)*a
  eev=sclin.eigh_tridiagonal(d,e,select='i',select_range=(fvalue,lvalue))
  return eev
 aa=Eigen(Vx,Vy,x,inttype,fvalue,lvalue,n)
