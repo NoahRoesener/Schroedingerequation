@@ -20,10 +20,10 @@ h = 4.0/n
 inttype = interpolationType() #type of interpolation
 a = 1/(M*h**2)
 x = np.linspace(stop,start,n+1)
-Vx = np.array([-2.0,2.0])
-Vy = np.array([0.0,0.0])
+Vx = np.array([-2.0,-0.5,-0.5,0.5,0.5,2.0])
+Vy = np.array([0.0,0.0,-10.0,-10.0,0.0,0.0])
 fvalue=0
-lvalue=4
+lvalue=2
 numev=lvalue-fvalue 
 def Eigen(Vx,Vy,x,inttype,fvalue,lvalue,n):
     if inttype == 'cubic' or inttype=='linear':
@@ -38,12 +38,20 @@ def Eigen(Vx,Vy,x,inttype,fvalue,lvalue,n):
 aa=Eigen(Vx,Vy,x,inttype,fvalue,lvalue,n)
 ev=aa[0]
 evec=aa[1]
+def Potential(Vx,Vy,x,inttype,fvalue,lvalue,n):
+    if inttype == 'cubic' or inttype=='linear':
+        grid=griddata(Vx,Vy,x,method=inttype)
+    elif inttype == 'polynomial':
+        coefficients=np.polyfit(Vx,Vy,2)
+        grid=np.polyval(coefficients,x)
+    return grid
+Pot=Potential(Vx,Vy,x,inttype,fvalue,lvalue,n)
 def normalize(dd):
     norm = np.linalg.norm(dd)
     if norm == 0: 
        return dd
     else:
-        return dd / norm 
+        return dd / norm
 def Erwartung(vec):
     ii=0
     ll=[]
@@ -74,16 +82,25 @@ Erwq=Erwartungquadrat(evec)
 Erw=Erwartung(evec)
 Unschärfe=np.sqrt(np.array(Erwq)-np.array(Erw)*np.array(Erw))
 print(Unschärfe)
-plt.plot(np.array(Erw),ev,'x',color='blue')
 ii=0
+plt.figure()
 while ii <= numev:
     vec=evec[:,ii]
     nvec=normalize(vec)
     nvec=7*nvec+ev[ii]
+    plt.subplot(1,2,1)
+    plt.plot(x,Pot)
+    plt.title('Potential, eigenstates, Erw(x)')
+    plt.plot(np.array(Erw),ev,'x',color='blue')
     plt.plot(x,nvec)
+    plt.xlabel('x[Bohr]')
+    plt.ylabel('Energy[Hartree]')
     plt.plot(x,np.zeros(n+1)+ev[ii],color='grey')
     ii+=1
-
+plt.subplot(1,2,2)
+plt.plot(Unschärfe,ev,'x',color='blue')
+plt.title('$\sigma_x$')
+plt.xlabel('x[Bohr]')
 
 
 
