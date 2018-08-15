@@ -6,7 +6,6 @@ Created on Wed Aug  8 20:52:36 2018
 """
 with open('schroedinger.inp', 'r') as f:
     content = f.readlines()
-
 datalines=[]  
 
 for line in content:
@@ -49,7 +48,7 @@ def getLastEigen():
     
 def interpolationType():
     interType=datalines[3]
-    if intertype == 'cspline':
+    if interType == 'cspline':
         return('cubic')
     else:
         return(interType)
