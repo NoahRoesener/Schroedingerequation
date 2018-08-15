@@ -81,7 +81,6 @@ def Erwartungquadrat(vec):
 Erwq=Erwartungquadrat(evec)
 Erw=Erwartung(evec)
 Unschärfe=np.sqrt(np.array(Erwq)-np.array(Erw)*np.array(Erw))
-print(Unschärfe)
 ii=0
 plt.figure()
 while ii <= numev:
@@ -101,6 +100,10 @@ plt.subplot(1,2,2)
 plt.plot(Unschärfe,ev,'x',color='blue')
 plt.title('$\sigma_x$')
 plt.xlabel('x[Bohr]')
+
+
+
+
 
 
 

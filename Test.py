@@ -20,3 +20,4 @@ plt.subplot(1,2,2)
 plt.plot(x2,y2)
 plt.plot(x2,y1)
 plt.show()
+'int' object is not callable
