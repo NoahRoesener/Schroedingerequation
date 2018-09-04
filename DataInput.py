@@ -54,7 +54,7 @@ def getFirstEigen():
 
 def getLastEigen():
     lEigen=datalines[2].split()
-    lEigen=int(lEigen[1])
+    lEigen=int(lEigen[0])
     return(lEigen)
     
 def interpolationType():
