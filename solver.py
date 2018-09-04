@@ -7,21 +7,22 @@ Created on Sat Aug  4 17:31:10 2018
 """
 import numpy as np 
 import DataInput
+import scipy
 from scipy import linalg as sclin
 from scipy.linalg import eigh_tridiagonal
 from scipy.interpolate import griddata
 import DataInput as di
 import matplotlib.pyplot as plt
-start = getXMin()
-stop = getXMax() 
-M = getMass() #mass of the object 
-n = getNumOfPoints()-1 
+start = di.getXMin()
+stop = di.getXMax() 
+M = di.getMass() #mass of the object 
+n = di.getNumOfPoints()-1 
 h = 4.0/n
-inttype = interpolationType() #type of interpolation
+inttype = di.interpolationType() #type of interpolation
 a = 1/(M*h**2)
 x = np.linspace(stop,start,n+1)
-Vx = np.array([-2.0,2.0])
-Vy = np.array([0.0,0.0])
+Vx = di.getXValues()
+Vy = di.getYValues()
 fvalue=0
 lvalue=4
 numev=lvalue-fvalue 
@@ -33,7 +34,7 @@ def Eigen(Vx,Vy,x,inttype,fvalue,lvalue,n):
         grid=np.polyval(coefficients,x)
     d=grid+a
     e=np.zeros(n)+(-0.5)*a
-    eev=sclin.eigh_tridiagonal(d,e,select='i',select_range=(fvalue,lvalue))
+    eev=eigh_tridiagonal(d,e,select='i',select_range=(fvalue,lvalue))
     return eev
 aa=Eigen(Vx,Vy,x,inttype,fvalue,lvalue,n)
 ev=aa[0]
@@ -83,6 +84,7 @@ while ii <= numev:
     plt.plot(x,nvec)
     plt.plot(x,np.zeros(n+1)+ev[ii],color='grey')
     ii+=1
+
 
 
 

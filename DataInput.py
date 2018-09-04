@@ -4,10 +4,21 @@ Created on Wed Aug  8 20:52:36 2018
 
 @author: noah
 """
-with open('schroedinger.inp', 'r') as f:
-    content = f.readlines()
-datalines=[]  
+import os 
+import numpy as np
 
+directory= os.getcwd()
+file_exists=os.path.isfile(directory+'/schroedinger.inp')
+
+if file_exists==True:
+    with open('schroedinger.inp', 'r') as f:
+        content = f.readlines()
+    datalines=[]  
+else:
+    filedirectory=input("Please specify the place of your inputfile:")
+    with open(filedirectory, 'r') as f:
+        content = f.readlines()
+    datalines=[]
 for line in content:
     newline = line.replace('\n','')
     location = newline.find('#')
@@ -53,8 +64,34 @@ def interpolationType():
     else:
         return(interType)
     
-
 def interPoints():
     interPoints=float(datalines[4])
     return(interPoints)
+    
+def getXValues():
+    coordinatesX=datalines[5:]
+    xValues=[]
+    for i in range(0, len(coordinatesX)):
+        xPaires=coordinatesX[i].split()  
+        for i in range(0, len(xPaires)):
+            xPaires[i]=float(xPaires[i])
+        xValues.extend(xPaires)
+    XValues=xValues[0::2]
+    return(XValues) 
+    
+def getYValues():
+    coordinatesY=datalines[5:]
+    yValues=[]
+    for i in range(0, len(coordinatesY)):
+        yPaires=coordinatesY[i].split() 
+        for i in range(0, len(yPaires)):
+            yPaires[i]=float(yPaires[i])
+        yValues.extend(yPaires)
+    yValues=yValues[1::2]
+    return(yValues) 
+    
+def saveEigenvalues(eigenValue, numberOfPoints):
+    for i in range(0, len(numberOfPoints)):
+        np.savetxt("energies.dat", eigenValue[i], fmt='%s')
+
 
