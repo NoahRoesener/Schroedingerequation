@@ -73,15 +73,10 @@ def getXValues():
     xValues=[]
     for i in range(0, len(coordinatesX)):
         xPaires=coordinatesX[i].split()  
-        for i in range(0, len(xPaires)):
-            xPaires[i]=float(xPaires[i])
         xValues.extend(xPaires)
     xValues=xValues[0::2]
-    for i in range(0, len(xValues)):
-        xValues[i]=str(xValues[i]).replace(' ','')
-        xValues[i]=float(xValues[i])
-    xValues= [feld for feld in xValues if feld != '']
-    return(xValues) 
+    test=np.asarray_chkfinite(xValues, dtype=np.float64, order='C')
+    return(test) 
     
 def getYValues():
     coordinatesY=datalines[5:]

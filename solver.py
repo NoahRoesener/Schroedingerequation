@@ -16,11 +16,12 @@ stop = di.getXMax()
 M = di.getMass() #mass of the object 
 n = di.getNumOfPoints()-1 
 h = 4.0/n
+x=np.linspace(stop, start, n+1)
 inttype = di.interpolationType() #type of interpolation
 a = 1/(M*h**2)
-Vx=np.array(di.getXValues())
+Vx =np.asarray_chkfinite(di.getXValues(), dtype=np.float64, order='C')
+Vy = np.asarray_chkfinite(di.getYValues(), dtype=np.float64, order='C')
 print(Vx)
-Vy = np.array([0.0, 0.0, -10.0, -10.0, 0.0, 0.0])
 print(Vy)
 fvalue=0
 lvalue=2
@@ -46,7 +47,6 @@ def Potential(Vx,Vy,x,inttype,fvalue,lvalue,n):
         coefficients=np.polyfit(Vx,Vy,2)
         grid=np.polyval(coefficients,x)
         return grid
-    return x
 Pot=Potential(Vx,Vy,x,inttype,fvalue,lvalue,n)
 def normalize(dd):
     norm = np.linalg.norm(dd)

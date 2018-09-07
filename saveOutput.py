@@ -10,7 +10,9 @@ import solver as slv
 import DataInput as di
 
 def saveEigenvalues(eigenValue, numberOfPoints):
-    for i in range(0, len(numberOfPoints)):
+    firstEigenvalue= input("Which is the first Eigenvalue you want to save?")
+    lastEigenvalue= input("Which is the last Eigenvalue you want to save?")
+    for i in range(firstEigenvalue, lastEigenvalue):
         np.savetxt("energies.dat", eigenValue[i], fmt='%s')
 
 def savePotential():
@@ -24,4 +26,4 @@ def savePotential():
         print(potential)
         #np.savetxt("potential.dat", potential, delimiter=' ', newline='\n' )
         
-a=savePotential()
+a=saveEigenvalues()
