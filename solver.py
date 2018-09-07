@@ -6,22 +6,22 @@ Created on Sat Aug  4 17:31:10 2018
 @author: eikegroen
 """
 import numpy as np 
-import DataInput
 from scipy import linalg as sclin
 from scipy.linalg import eigh_tridiagonal
 from scipy.interpolate import griddata
 import DataInput as di
 import matplotlib.pyplot as plt
-start = getXMin()
-stop = getXMax() 
-M = getMass() #mass of the object 
-n = getNumOfPoints()-1 
+start = di.getXMin()
+stop = di.getXMax() 
+M = di.getMass() #mass of the object 
+n = di.getNumOfPoints()-1 
 h = 4.0/n
-inttype = interpolationType() #type of interpolation
+inttype = di.interpolationType() #type of interpolation
 a = 1/(M*h**2)
-x = np.linspace(stop,start,n+1)
-Vx = np.array([-2.0,-0.5,-0.5,0.5,0.5,2.0])
-Vy = np.array([0.0,0.0,-10.0,-10.0,0.0,0.0])
+Vx=np.array(di.getXValues())
+print(Vx)
+Vy = np.array([0.0, 0.0, -10.0, -10.0, 0.0, 0.0])
+print(Vy)
 fvalue=0
 lvalue=2
 numev=lvalue-fvalue 
@@ -41,10 +41,12 @@ evec=aa[1]
 def Potential(Vx,Vy,x,inttype,fvalue,lvalue,n):
     if inttype == 'cubic' or inttype=='linear':
         grid=griddata(Vx,Vy,x,method=inttype)
+        return grid
     elif inttype == 'polynomial':
         coefficients=np.polyfit(Vx,Vy,2)
         grid=np.polyval(coefficients,x)
-    return grid
+        return grid
+    return x
 Pot=Potential(Vx,Vy,x,inttype,fvalue,lvalue,n)
 def normalize(dd):
     norm = np.linalg.norm(dd)

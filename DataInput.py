@@ -76,8 +76,12 @@ def getXValues():
         for i in range(0, len(xPaires)):
             xPaires[i]=float(xPaires[i])
         xValues.extend(xPaires)
-    XValues=xValues[0::2]
-    return(XValues) 
+    xValues=xValues[0::2]
+    for i in range(0, len(xValues)):
+        xValues[i]=str(xValues[i]).replace(' ','')
+        xValues[i]=float(xValues[i])
+    xValues= [feld for feld in xValues if feld != '']
+    return(xValues) 
     
 def getYValues():
     coordinatesY=datalines[5:]
@@ -89,9 +93,3 @@ def getYValues():
         yValues.extend(yPaires)
     yValues=yValues[1::2]
     return(yValues) 
-    
-def saveEigenvalues(eigenValue, numberOfPoints):
-    for i in range(0, len(numberOfPoints)):
-        np.savetxt("energies.dat", eigenValue[i], fmt='%s')
-
-
