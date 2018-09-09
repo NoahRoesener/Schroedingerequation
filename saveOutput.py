@@ -6,24 +6,32 @@ Created on Thu Sep  6 17:03:18 2018
 @author: noah
 """
 import numpy as np
-import solver as slv
 import DataInput as di
 
-def saveEigenvalues(eigenValue, numberOfPoints):
-    firstEigenvalue= input("Which is the first Eigenvalue you want to save?")
-    lastEigenvalue= input("Which is the last Eigenvalue you want to save?")
-    for i in range(firstEigenvalue, lastEigenvalue):
-        np.savetxt("energies.dat", eigenValue[i], fmt='%s')
+def saveEigenvalues(eigenValue):
+    firstEigenvalue= int(input("Which is the first Eigenvalue you want to save?"))
+    lastEigenvalue= int(input("Which is the last Eigenvalue you want to save?"))
+    chEigen=[]
+    for i in range(firstEigenvalue-1, lastEigenvalue):
+        test=eigenValue[i]
+        chEigen.append(test)
+    np.savetxt("energies.dat", chEigen, fmt='%s')
+    return (chEigen)
 
-def savePotential():
-    pot=slv.Potential(di.getXValues(), di.getYValues(), np.linspace(di.getXMax(),di.getXMin(),di.getNumOfPoints()), di.interpolationType(), di.getFirstEigen(), di.getLastEigen(), di.getNumOfPoints()-1)
+def savePotential(pot, x):
     potential=[]
-    potential=potential.extend(pot)
-    print(pot)
-    print(potential)
+    coordinates=[]
     for i in range (0, len(pot)):
-        potential=potential.append(pot[i])
-        print(potential)
-        #np.savetxt("potential.dat", potential, delimiter=' ', newline='\n' )
+        coordinates.append(x[i])
+        potential.append(pot[i])
+    np.savetxt("potential.dat", np.transpose([coordinates, potential]))
         
-a=saveEigenvalues()
+def saveWavefunc(vec, x):
+    wavefunc=[]
+    coordinates=[]
+    for i in range(0, len(vec)):
+        coordinates.append(x[i])
+        wavefunc.append(vec[i])
+    np.savetxt("wavefunction.dat", (coordinates, [wavefunc]))
+    #np.save("wavefunctions.dat", (coordinates,wavefunc))
+    

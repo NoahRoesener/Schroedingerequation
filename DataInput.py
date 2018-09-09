@@ -46,7 +46,6 @@ def getNumOfPoints():
     nPoints=int(nPoints[2])
     return(nPoints)
 
-
 def getFirstEigen():
     fEigen=datalines[2].split()
     fEigen=int(fEigen[0])
@@ -54,7 +53,7 @@ def getFirstEigen():
 
 def getLastEigen():
     lEigen=datalines[2].split()
-    lEigen=int(lEigen[0])
+    lEigen=int(lEigen[1])
     return(lEigen)
     
 def interpolationType():
@@ -75,16 +74,13 @@ def getXValues():
         xPaires=coordinatesX[i].split()  
         xValues.extend(xPaires)
     xValues=xValues[0::2]
-    test=np.asarray_chkfinite(xValues, dtype=np.float64, order='C')
-    return(test) 
+    return(xValues) 
     
 def getYValues():
     coordinatesY=datalines[5:]
     yValues=[]
     for i in range(0, len(coordinatesY)):
         yPaires=coordinatesY[i].split() 
-        for i in range(0, len(yPaires)):
-            yPaires[i]=float(yPaires[i])
         yValues.extend(yPaires)
     yValues=yValues[1::2]
     return(yValues) 
