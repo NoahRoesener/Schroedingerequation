@@ -11,7 +11,27 @@ import DataInput as di
 import solver as slv
 import saveOutput as so
 import matplotlib as plt
+import matplotlib.pyplot as plt
 import scipy as sc
+
+start = di.getXMin()
+stop = di.getXMax() 
+n = di.getNumOfPoints()-1 
+x=np.linspace(stop, start, n+1)
+inttype = di.interpolationType() #type of interpolation
+Vx =np.asarray_chkfinite(di.getXValues(), dtype=np.float64, order='C')
+Vy = np.asarray_chkfinite(di.getYValues(), dtype=np.float64, order='C')
+fvalue=di.getFirstEigen()-1
+lvalue=di.getLastEigen()-1
+numev=lvalue-fvalue
+
+aa=slv.Eigen(Vx,Vy,x,inttype,fvalue,lvalue,n)
+ev=aa[0]
+evec=aa[1]
+Pot=slv.Potential(Vx,Vy,x,inttype,fvalue,lvalue,n)
+Erwq=slv.Erwartungquadrat(evec, numev, x)
+Erw=slv.Erwartung(evec, numev, x)
+Unschärfe=np.sqrt(np.array(Erwq)-np.array(Erw)*np.array(Erw))
 
 ii=0
 plt.figure()

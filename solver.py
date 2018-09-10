@@ -12,19 +12,11 @@ from scipy.interpolate import griddata
 import DataInput as di
 import matplotlib.pyplot as plt
 import saveOutput as so
-start = di.getXMin()
-stop = di.getXMax() 
+
 M = di.getMass() #mass of the object 
 n = di.getNumOfPoints()-1 
 h = 4.0/n
-x=np.linspace(stop, start, n+1)
-inttype = di.interpolationType() #type of interpolation
 a = 1/(M*h**2)
-Vx =np.asarray_chkfinite(di.getXValues(), dtype=np.float64, order='C')
-Vy = np.asarray_chkfinite(di.getYValues(), dtype=np.float64, order='C')
-fvalue=di.getFirstEigen()-1
-lvalue=di.getLastEigen()-1
-numev=lvalue-fvalue 
 
 
 def Eigen(Vx,Vy,x,inttype,fvalue,lvalue,n):
@@ -58,7 +50,7 @@ def normalize(dd):
         return dd / norm
     
     
-def Erwartung(vec):
+def Erwartung(vec, numev, x):
     ii=0
     ll=[]
     while ii <= numev:
@@ -73,7 +65,7 @@ def Erwartung(vec):
     return ll
 
 
-def Erwartungquadrat(vec):
+def Erwartungquadrat(vec, numev, x):
     ii=0
     ll=[]
     while ii <= numev:
@@ -88,16 +80,6 @@ def Erwartungquadrat(vec):
     return ll
 
 
-aa=Eigen(Vx,Vy,x,inttype,fvalue,lvalue,n)
-ev=aa[0]
-evec=aa[1]
-Pot=Potential(Vx,Vy,x,inttype,fvalue,lvalue,n)
-Erwq=Erwartungquadrat(evec)
-Erw=Erwartung(evec)
-Unschärfe=np.sqrt(np.array(Erwq)-np.array(Erw)*np.array(Erw))
-
-
-a=so.saveWavefunc(evec, x)
 
 
 

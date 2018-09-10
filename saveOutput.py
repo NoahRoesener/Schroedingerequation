@@ -32,6 +32,6 @@ def saveWavefunc(vec, x):
     for i in range(0, len(vec)):
         coordinates.append(x[i])
         wavefunc.append(vec[i])
-    np.savetxt("wavefunction.dat", (coordinates, [wavefunc]))
+    #np.savetxt("wavefunction.dat", (coordinates, [wavefunc]))
     #np.save("wavefunctions.dat", (coordinates,wavefunc))
     
