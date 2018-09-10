@@ -12,7 +12,6 @@ import solver as slv
 import saveOutput as so
 import matplotlib as plt
 import matplotlib.pyplot as plt
-import scipy as sc
 
 start = di.getXMin()
 stop = di.getXMax() 
@@ -25,19 +24,22 @@ fvalue=di.getFirstEigen()-1
 lvalue=di.getLastEigen()-1
 numev=lvalue-fvalue
 
-aa=slv.Eigen(Vx,Vy,x,inttype,fvalue,lvalue,n)
+aa=slv.Eigen(Vx,Vy,x,inttype,fvalue,lvalue)
 ev=aa[0]
 evec=aa[1]
-Pot=slv.Potential(Vx,Vy,x,inttype,fvalue,lvalue,n)
+Pot=slv.Potential(Vx,Vy,x,inttype)
 Erwq=slv.Erwartungquadrat(evec, numev, x)
 Erw=slv.Erwartung(evec, numev, x)
 Unschärfe=np.sqrt(np.array(Erwq)-np.array(Erw)*np.array(Erw))
 
+so.saveEigenvalues(ev)
+so.savePotential(Pot, x)
+so.saveWavefunc(evec, x)
 ii=0
 plt.figure()
 while ii <= numev:
     vec=evec[:,ii]
-    nvec=normalize(vec)
+    nvec=slv.normalize(vec)
     nvec=40*nvec+ev[ii]
     plt.subplot(1,2,1)
     plt.plot(x,Pot)

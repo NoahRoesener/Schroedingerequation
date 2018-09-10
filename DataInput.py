@@ -4,8 +4,7 @@ Created on Wed Aug  8 20:52:36 2018
 
 @author: noah
 """
-import os 
-import numpy as np
+import os
 
 directory= os.getcwd()
 file_exists=os.path.isfile(directory+'/schroedinger.inp')
@@ -13,7 +12,7 @@ file_exists=os.path.isfile(directory+'/schroedinger.inp')
 if file_exists==True:
     with open('schroedinger.inp', 'r') as f:
         content = f.readlines()
-    datalines=[]  
+    datalines=[]
 else:
     filedirectory=input("Please specify the place of your inputfile:")
     with open(filedirectory, 'r') as f:
@@ -71,16 +70,16 @@ def getXValues():
     coordinatesX=datalines[5:]
     xValues=[]
     for i in range(0, len(coordinatesX)):
-        xPaires=coordinatesX[i].split()  
+        xPaires=coordinatesX[i].split()
         xValues.extend(xPaires)
     xValues=xValues[0::2]
-    return(xValues) 
+    return(xValues)
     
 def getYValues():
     coordinatesY=datalines[5:]
     yValues=[]
     for i in range(0, len(coordinatesY)):
-        yPaires=coordinatesY[i].split() 
+        yPaires=coordinatesY[i].split()
         yValues.extend(yPaires)
     yValues=yValues[1::2]
-    return(yValues) 
+    return(yValues)
