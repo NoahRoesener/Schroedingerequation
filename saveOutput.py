@@ -7,11 +7,9 @@ Created on Thu Sep  6 17:03:18 2018
 """
 import numpy as np
 
-def saveEigenvalues(eigenValue):
-    firstEigenvalue = int(input("Which is the first Eigenvalue you want to save?"))
-    lastEigenvalue = int(input("Which is the last Eigenvalue you want to save?"))
+def saveEigenvalues(eigenValue, fvalue, lvalue):
     chEigen = []
-    for i in range(firstEigenvalue-1, lastEigenvalue):
+    for i in range(fValue-1, lValue):
         test = eigenValue[i]
         chEigen.append(test)
     np.savetxt("energies.dat", chEigen, fmt ='%s')
@@ -26,13 +24,10 @@ def savePotential(pot, x):
     np.savetxt("potential.dat", np.transpose([coordinates, potential]))
 
 def saveWavefunc(vec, x):
-    wavefunc = []
+    wavefunc = {}
     coordinates = []
     for i in range(0, len(vec)):
         coordinates.append(x[i])
-        wavefunc.append(vec[i])
+        wavefunc[i]=vec[i]
     #np.savetxt("wavefunction.dat", (coordinates, [wavefunc]))
-    np.save("wavefunctions.dat", (coordinates,wavefunc))    
-
-
-saveWavefunc
+    #np.save("wavefunctions.dat", (coordinates,wavefunc))    

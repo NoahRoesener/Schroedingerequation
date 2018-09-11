@@ -10,8 +10,7 @@ import numpy as np
 import DataInput as di
 import solver as slv
 import saveOutput as so
-import matplotlib as plt
-import matplotlib.pyplot as plt
+import plot as plt
 
 start = di.getXMin()
 stop = di.getXMax() 
@@ -32,25 +31,10 @@ Erwq=slv.Erwartungquadrat(evec, numev, x)
 Erw=slv.Erwartung(evec, numev, x)
 Unschärfe=np.sqrt(np.array(Erwq)-np.array(Erw)*np.array(Erw))
 
-so.saveEigenvalues(ev)
+so.saveEigenvalues(ev, fvalue, lvalue)
 so.savePotential(Pot, x)
 so.saveWavefunc(evec, x)
-ii=0
-plt.figure()
-while ii <= numev:
-    vec=evec[:,ii]
-    nvec=slv.normalize(vec)
-    nvec=40*nvec+ev[ii]
-    plt.subplot(1,2,1)
-    plt.plot(x,Pot)
-    plt.title('Potential, eigenstates, Erw(x)')
-    plt.plot(np.array(Erw),ev,'x',color='blue')
-    plt.plot(x,nvec)
-    plt.xlabel('x[Bohr]')
-    plt.ylabel('Energy[Hartree]')
-    plt.plot(x,np.zeros(n+1)+ev[ii],color='grey')
-    ii+=1
-plt.subplot(1,2,2)
-plt.plot(Unschärfe,ev,'x',color='blue')
-plt.title('$\sigma_x$')
-plt.xlabel('x[Bohr]')
+
+
+plt.plotWavefunc(numev, evec, Pot, Erw, ev, x)
+
