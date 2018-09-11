@@ -9,7 +9,7 @@ import numpy as np
 
 def saveEigenvalues(eigenValue, fvalue, lvalue):
     chEigen = []
-    for i in range(fValue-1, lValue):
+    for i in range(fvalue-1, lvalue):
         test = eigenValue[i]
         chEigen.append(test)
     np.savetxt("energies.dat", chEigen, fmt ='%s')

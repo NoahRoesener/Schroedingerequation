@@ -36,5 +36,5 @@ so.savePotential(Pot, x)
 so.saveWavefunc(evec, x)
 
 
-plt.plotWavefunc(numev, evec, Pot, Erw, ev, x)
+plt.plotWavefunc(numev, evec, Pot, Erw, ev, x, n, Unschärfe)
 
