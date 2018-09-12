@@ -8,26 +8,56 @@ Created on Thu Sep  6 17:03:18 2018
 import numpy as np
 
 def saveEigenvalues(eigenValue, fvalue, lvalue):
-    chEigen = []
-    for i in range(fvalue-1, lvalue):
-        test = eigenValue[i]
-        chEigen.append(test)
-    np.savetxt("energies.dat", chEigen, fmt ='%s')
-    return (chEigen)
+     """Saves the calculated eigenvalues into a file
+
+     Args:
+        eigenValue: The container where the eigenvalues are stored in.
+        fvalue: The first eigenvalue to be saved.
+        lvalue: The last eigenvalue to be saved.
+     """
+     chEigen = []
+     for ii in range(fvalue, lvalue+1):
+          test = eigenValue[ii]
+          chEigen.append(test)
+     np.savetxt("energies.dat", chEigen, fmt='%s')
 
 def savePotential(pot, x):
-    potential = []
-    coordinates = []
-    for i in range (0, len(pot)):
-        coordinates.append(x[i])
-        potential.append(pot[i])
-    np.savetxt("potential.dat", np.transpose([coordinates, potential]))
+     """Saves the calculated potential into a file
+
+     Args:
+        pot: The container where the calculated potentials are stored in.
+        x: The container where the x-coordinates are stored in.
+     """
+     potential = []
+     coordinates = []
+     for ii in range(0, len(pot)):
+        coordinates.append(x[ii])
+        potential.append(pot[ii])
+     np.savetxt("potential.dat", np.transpose([coordinates, potential]))
+
+def saveExpValues(erw, erwq):
+     """ The function saves the erwartungsvalues and the squared erwartungsvalues.
+
+     Args:
+          erw: The container where the calculated erwartungsvalues are stored in.
+          erwq: The container where the calculated and squared erwartungsvalues
+               are stored in.
+     """
+     Erwartung = np.zeros(len(erw))
+     ErwartungQuad = np.zeros(len(erwq))
+     for ii in range(0, len(erw)):
+        Erwartung[ii]=erw[ii]
+        ErwartungQuad[ii]=erwq[ii]
+     np.savetxt("expvalues.dat", np.transpose([Erwartung, ErwartungQuad]), fmt ='%s')
+
 
 def saveWavefunc(vec, x):
     wavefunc = {}
     coordinates = []
-    for i in range(0, len(vec)):
-        coordinates.append(x[i])
-        wavefunc[i]=vec[i]
+    for ii in range(0, len(vec)):
+        coordinates.append(x[ii])
+        wavefunc[ii]=vec[ii]
+        wavecoords=zip(coordinates, wavefunc)
+    print(wavecoords)
     #np.savetxt("wavefunction.dat", (coordinates, [wavefunc]))
-    #np.save("wavefunctions.dat", (coordinates,wavefunc))    
+    #np.save("wavefunctions.dat", (coordinates,wavefunc))

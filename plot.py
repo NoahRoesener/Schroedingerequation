@@ -8,6 +8,7 @@ Created on Tue Sep 11 14:57:11 2018
 import matplotlib.pyplot as plt
 import solver as slv
 import numpy as np
+import DataInput as di
 
 def plotWavefunc(numev, evec, pot, Erw, ev, x , n, Unschaerfe):
     ii=0
@@ -15,7 +16,7 @@ def plotWavefunc(numev, evec, pot, Erw, ev, x , n, Unschaerfe):
     while ii <= numev:
         vec=evec[:,ii]
         nvec=slv.normalize(vec)
-        nvec=40*nvec+ev[ii]
+        nvec=0.05*nvec+ev[ii]
         plt.subplot(1,2,1)
         plt.plot(x, pot)
         plt.title('Potential, eigenstates, Erw(x)')
@@ -24,6 +25,8 @@ def plotWavefunc(numev, evec, pot, Erw, ev, x , n, Unschaerfe):
         plt.xlabel('x[Bohr]')
         plt.ylabel('Energy[Hartree]')
         plt.plot(x,np.zeros(n+1)+ev[ii],color='grey')
+        plt.xlim(di.getXMin(), di.getXMax())
+        plt.ylim(0, 3.5)
         ii+=1
     plt.subplot(1,2,2)
     plt.plot(Unschaerfe,ev,'x',color='blue')

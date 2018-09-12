@@ -26,15 +26,11 @@ numev=lvalue-fvalue
 aa=slv.Eigen(Vx,Vy,x,inttype,fvalue,lvalue)
 ev=aa[0]
 evec=aa[1]
-Pot=slv.Potential(Vx,Vy,x,inttype)
-Erwq=slv.Erwartungquadrat(evec, numev, x)
-Erw=slv.Erwartung(evec, numev, x)
+Erwq=di.readCalcErwartungQuad()
+Erw=di.readCalcErwartung()
 Unschärfe=np.sqrt(np.array(Erwq)-np.array(Erw)*np.array(Erw))
-
-so.saveEigenvalues(ev, fvalue, lvalue)
-so.savePotential(Pot, x)
-so.saveWavefunc(evec, x)
-
-
-plt.plotWavefunc(numev, evec, Pot, Erw, ev, x, n, Unschärfe)
+so.saveEigenvalues(ev , fvalue, lvalue)
+so.savePotential(slv.Potential(Vx, Vy, x, inttype), x)
+so.saveExpValues(Erw, Erwq)
+plt.plotWavefunc(numev, evec, di.readCalcPotential(), Erw, di.readCalcEigenval(), di.readCalcXValue(), n, Unschärfe)
 

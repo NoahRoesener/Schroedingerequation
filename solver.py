@@ -14,7 +14,10 @@ import saveOutput as so
 
 M = di.getMass() #mass of the object
 N = di.getNumOfPoints()-1
-H = 4.0/N
+if di.getXMin()<0:
+    H = (abs(di.getXMin())+abs(di.getXMax()))/N
+else:
+    H = (di.getXMax()-di.getXMin())/N
 A = 1/(M*H**2)
 
 
@@ -40,11 +43,15 @@ def Potential(Vx, Vy, x, inttype):
         return grid
 
 def normalize(dd):
-    norm = np.linalg.norm(dd)
-    if norm == 0:
-        return dd
-    else:
-        return dd / norm
+     norm = 0
+     for element in dd:
+          norm = norm+element**2
+     norm = norm*H
+     if norm == 0:
+          return dd
+     else:
+          return dd/norm
+
 
 def Erwartung(vec, numev, x):
     ii = 0
@@ -53,10 +60,10 @@ def Erwartung(vec, numev, x):
         bvec = vec[:, ii]
         nvec = normalize(bvec)
         Erwvec = nvec*nvec*x
-        sum = 0
+        su = 0
         for qq in Erwvec:
-            sum += qq
-        ll.append(sum*H)
+            su += qq
+        ll.append(su*H)
         ii += 1
     return ll
 
@@ -68,9 +75,9 @@ def Erwartungquadrat(vec, numev, x):
         bvec = vec[:, ii]
         nvec = normalize(bvec)
         Erwvec = nvec*nvec*x*x
-        sum = 0
+        su = 0
         for qq in Erwvec:
-            sum += qq
-        ll.append(sum*H)
+            su += qq
+        ll.append(su*H)
         ii += 1
     return ll
