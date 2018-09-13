@@ -52,12 +52,6 @@ def saveExpValues(erw, erwq):
 
 
 def saveWavefunc(vec, x):
-    wavefunc = {}
-    coordinates = []
-    for ii in range(0, len(vec)):
-        coordinates.append(x[ii])
-        wavefunc[ii]=vec[ii]
-        wavecoords=zip(coordinates, wavefunc)
-    print(wavecoords)
-    #np.savetxt("wavefunction.dat", (coordinates, [wavefunc]))
-    #np.save("wavefunctions.dat", (coordinates,wavefunc))
+    x_shape = np.reshape(x, (-1,1))
+    rts = np.hstack((x_shape, vec))
+    np.savetxt("wavefunction.dat", rts)

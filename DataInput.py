@@ -108,13 +108,13 @@ def getXValues():
      Return:
           Returns the given x-values.
      """
-    coordinatesX=datalines[5:]
-    xValues=[]
-    for ii in range(0, len(coordinatesX)):
+     coordinatesX=datalines[5:]
+     xValues=[]
+     for ii in range(0, len(coordinatesX)):
         xPaires=coordinatesX[ii].split()
         xValues.extend(xPaires)
-    xValues=xValues[0::2]
-    return(xValues)
+     xValues=xValues[0::2]
+     return(xValues)
 
 def getYValues():
      """The function gets the given y-values from the schroedinger.inp.
@@ -122,13 +122,13 @@ def getYValues():
      Return:
           Returns the given y-values
      """
-    coordinatesY=datalines[5:]
-    yValues=[]
-    for ii in range(0, len(coordinatesY)):
+     coordinatesY=datalines[5:]
+     yValues=[]
+     for ii in range(0, len(coordinatesY)):
         yPaires=coordinatesY[ii].split()
         yValues.extend(yPaires)
-    yValues=yValues[1::2]
-    return(yValues)
+     yValues=yValues[1::2]
+     return(yValues)
 
 def readCalcEigenval():
     """The function reads out the calculated eigenvalues that are saved in a file.

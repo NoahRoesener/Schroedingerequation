@@ -16,7 +16,7 @@ def plotWavefunc(numev, evec, pot, Erw, ev, x , n, Unschaerfe):
     while ii <= numev:
         vec=evec[:,ii]
         nvec=slv.normalize(vec)
-        nvec=0.05*nvec+ev[ii]
+        nvec=0.01*nvec+ev[ii]
         plt.subplot(1,2,1)
         plt.plot(x, pot)
         plt.title('Potential, eigenstates, Erw(x)')
@@ -26,7 +26,7 @@ def plotWavefunc(numev, evec, pot, Erw, ev, x , n, Unschaerfe):
         plt.ylabel('Energy[Hartree]')
         plt.plot(x,np.zeros(n+1)+ev[ii],color='grey')
         plt.xlim(di.getXMin(), di.getXMax())
-        plt.ylim(0, 3.5)
+        plt.ylim(0, 4.5)
         ii+=1
     plt.subplot(1,2,2)
     plt.plot(Unschaerfe,ev,'x',color='blue')

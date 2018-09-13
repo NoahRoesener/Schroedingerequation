@@ -29,8 +29,8 @@ def Eigen(Vx, Vy, x, inttype, fvalue, lvalue):
         grid = np.polyval(coefficients, x)
     d = grid+A
     e = np.zeros(N)+(-0.5)*A
-    eev = sclin.eigh_tridiagonal(d, e, select='i', select_range=(fvalue, lvalue))
-    return eev
+    eiva, eive = sclin.eigh_tridiagonal(d, e, select_range=(fvalue, lvalue))
+    return eiva, eive
 
 
 def Potential(Vx, Vy, x, inttype):
