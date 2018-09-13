@@ -10,36 +10,36 @@ from scipy import linalg as sclin
 from scipy.linalg import eigh_tridiagonal
 from scipy.interpolate import griddata
 import DataInput as di
-import saveOutput as so
+import saveoutput as so
 
-M = di.getMass() #mass of the object
-N = di.getNumOfPoints()-1
-if di.getXMin()<0:
-    H = (abs(di.getXMin())+abs(di.getXMax()))/N
+M = di.getmass() #mass of the object
+N = di.getnumofpoints()-1
+if di.getxmin() < 0:
+    H = (abs(di.getxmin())+abs(di.getxmax()))/N
 else:
-    H = (di.getXMax()-di.getXMin())/N
+    H = (di.getxmax()-di.getxmin())/N
 A = 1/(M*H**2)
 
 
-def Eigen(Vx, Vy, x, inttype, fvalue, lvalue):
+def eigen(vx, vy, xx, inttype, fvalue, lvalue):
     if inttype == 'cubic' or inttype == 'linear':
-        grid = griddata(Vx, Vy, x, method=inttype)
+        grid = griddata(vx, vy, xx, method=inttype)
     elif inttype == 'polynomial':
-        coefficients = np.polyfit(Vx, Vy, 2)
-        grid = np.polyval(coefficients, x)
+        coefficients = np.polyfit(vx, vy, 2)
+        grid = np.polyval(coefficients, xx)
     d = grid+A
     e = np.zeros(N)+(-0.5)*A
     eiva, eive = sclin.eigh_tridiagonal(d, e, select_range=(fvalue, lvalue))
     return eiva, eive
 
 
-def Potential(Vx, Vy, x, inttype):
+def potential(vx, vy, xx, inttype):
     if inttype == 'cubic' or inttype == 'linear':
-        grid = griddata(Vx, Vy, x, method=inttype)
+        grid = griddata(vx, vy, xx, method=inttype)
         return grid
     elif inttype == 'polynomial':
-        coefficients = np.polyfit(Vx, Vy, 2)
-        grid = np.polyval(coefficients, x)
+        coefficients = np.polyfit(vx, vy, 2)
+        grid = np.polyval(coefficients, xx)
         return grid
 
 def normalize(dd):
@@ -53,13 +53,13 @@ def normalize(dd):
           return dd/norm
 
 
-def Erwartung(vec, numev, x):
+def erwartung(vec, numev, xx):
     ii = 0
     ll = []
     while ii <= numev:
         bvec = vec[:, ii]
         nvec = normalize(bvec)
-        Erwvec = nvec*nvec*x
+        Erwvec = nvec*nvec*xx
         su = 0
         for qq in Erwvec:
             su += qq
@@ -68,16 +68,20 @@ def Erwartung(vec, numev, x):
     return ll
 
 
-def Erwartungquadrat(vec, numev, x):
+def erwartungquadrat(vec, numev, xx):
     ii = 0
     ll = []
     while ii <= numev:
         bvec = vec[:, ii]
         nvec = normalize(bvec)
-        Erwvec = nvec*nvec*x*x
+        Erwvec = nvec*nvec*xx*xx
         su = 0
         for qq in Erwvec:
             su += qq
         ll.append(su*H)
         ii += 1
     return ll
+
+def unschaerfe(erw, erwq):
+     uns = np.sqrt(np.array(erwq)-np.array(erw)*np.array(erw))
+     return(uns)
