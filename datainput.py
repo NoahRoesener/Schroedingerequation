@@ -30,8 +30,8 @@ for line in CONTENT:
 def getmass():
     """Reads out the mass from an array with many specifications.
 
-    Return:
-        Returns the mass of the object.
+    :rtype: float
+    :returns: Returns the mass of the object.
     """
     mass = float(DATALINES[0])
     return mass
@@ -39,8 +39,8 @@ def getmass():
 def getxmax():
     """Reads out the maximal x-value from an array with many specifications.
 
-    Return:
-        Returns the maximal x-value
+    :rtype: float
+    :returns: Returns the maximal x-value
     """
     xmax = DATALINES[1].split()
     xmax = float(xmax[1])
@@ -49,8 +49,8 @@ def getxmax():
 def getxmin():
     """Reads out the minimal x-value from an array with many specifications.
 
-    Return:
-        Returns the minimal x-value
+    :rtype: float
+    :returns: Returns the minimall x-value
     """
     xmin = DATALINES[1].split()
     xmin = float(xmin[0])
@@ -59,8 +59,8 @@ def getxmin():
 def getnumofpoints():
     """Reads out the amount of numbers to be calculated and plotted afterwards.
 
-    Return:
-        Returns the number of points to be calculated.
+    :rtype: float
+    :returns: Returns the number of points to be calculated.
     """
     npoints = DATALINES[1].split()
     npoints = int(npoints[2])
@@ -69,8 +69,8 @@ def getnumofpoints():
 def getfirsteigen():
     """The function gets the number of the first eigenvalue that is to account.
 
-    Return:
-        Returns the first number of the eigenvalues that ist to account.
+    :rtype: float
+    :returns: Returns the number of the first eigenvalue
     """
     feigen = DATALINES[2].split()
     feigen = int(feigen[0])
@@ -79,8 +79,8 @@ def getfirsteigen():
 def getlasteigen():
     """The function gets the number of the last eigenvalue that is to account.
 
-    Return:
-        Returns the last number of the eigenvalues that ist to account.
+    :rtype: float
+    :returns: Returns the number of the last eigenvalue
     """
     leigen = DATALINES[2].split()
     leigen = int(leigen[1])
@@ -89,8 +89,8 @@ def getlasteigen():
 def interpolationtype():
     """The function gets the interpolation type from an array.
 
-    Return:
-        Returns the interpolation type.
+    :rtype: string
+    :returns: Returns the interpolationtype
     """
     intertype = DATALINES[3]
     if intertype == 'cspline':
@@ -101,8 +101,8 @@ def interpolationtype():
 def interpoints():
     """The functions gets the number of interpolationpoints from an array.
 
-    Return:
-         Returns the number of interpolationpoints
+    :rtype: float
+    :returns: Returns number of interpolationpoints
     """
     interppoints = float(DATALINES[4])
     return interppoints
@@ -110,8 +110,8 @@ def interpoints():
 def getxvalues():
     """The function gets the given x-values from the schroedinger.inp.
 
-    Return:
-          Returns the given x-values.
+    :rtype: array[float]
+    :returns: Returns the given x-value
     """
     coordinatesx = DATALINES[5:]
     xvalues = []
@@ -124,8 +124,8 @@ def getxvalues():
 def getyvalues():
     """The function gets the given y-values from the schroedinger.inp.
 
-    Return:
-          Returns the given y-values
+    :rtype: array[float]
+    :returns: Returns the given y-value
     """
     coordinatesy = DATALINES[5:]
     yvalues = []
@@ -135,13 +135,13 @@ def getyvalues():
     yvalues = yvalues[1::2]
     return yvalues
 
-def readcalceigenval():
+def readcalceigenval(file):
     """The function reads out the calculated eigenvalues that are saved in a file.
 
-    Return:
-        Returns an array with the eigenvalues as its content.
+    :rtype: array[float]
+    :returns: Returns the saved eigenvalues
     """
-    with open('energies.dat', 'r') as ff:
+    with open(file, 'r') as ff:
         content_energies = ff.readlines()
         energies = []
     for line in content_energies:
@@ -152,13 +152,13 @@ def readcalceigenval():
         readenergies[ii] = float(energies[ii])
     return readenergies
 
-def readcalcpotential():
+def readcalcpotential(file):
     """The functon reads out the calculated potentials that are saved in a file.
 
-    Return:
-        Returns an array with the potentials as its content.
+    :rtype: array[float]
+    :returns: Returns the saved potentials
     """
-    with open('potential.dat', 'r') as ff:
+    with open(file, 'r') as ff:
         content_potential = ff.readlines()
         potential = []
     for line in content_potential:
@@ -169,13 +169,13 @@ def readcalcpotential():
         readpotential[ii] = float(potential[ii].split()[1])
     return readpotential
 
-def readcalcxvalue():
+def readcalcxvalue(file):
     """The function reads out the calculated x values that are saved in a file.
 
-    Return:
-        Returns an array with the calculated x values as its content.
+    :rtype: array[float]
+    :returns: Returns the saved x-values
     """
-    with open('potential.dat', 'r') as ff:
+    with open(file, 'r') as ff:
         content_potential = ff.readlines()
         potential = []
     for line in content_potential:
@@ -186,13 +186,13 @@ def readcalcxvalue():
         readcoordinates[ii] = float(potential[ii].split()[0])
     return readcoordinates
 
-def readcalcerwartung():
+def readcalcerwartung(file):
     """The function reads out the calculated erwartungsvalues that are saved in a file.
 
-    Retun:
-        Returns an array with the calculated erwartungsvalues as its content.
+    :rtype: array[float]
+    :returns: Returns the saved erwartungsvalues
     """
-    with open('expvalues.dat', 'r') as ff:
+    with open(file, 'r') as ff:
         content_expvalues = ff.readlines()
         erwartung = []
     for line in content_expvalues:
@@ -203,14 +203,14 @@ def readcalcerwartung():
         erwartungval[ii] = float(erwartung[ii].split()[0])
     return erwartungval
 
-def readcalcerwartungquad():
+def readcalcerwartungquad(file):
     """The function reads out the calculated and squared erwartungsvalues
         that are saved in a file.
 
-    Return:
-        Returns an array with the calculated and squared erwartungsvalues as its content.
+    :rtype: array[float]
+    :returns: Returns the saved squared erwartungsvalues
     """
-    with open('expvalues.dat', 'r') as ff:
+    with open(file, 'r') as ff:
         content_expvalues = ff.readlines()
         erwartungquad = []
     for line in content_expvalues:
@@ -221,14 +221,14 @@ def readcalcerwartungquad():
         erwartungquadval[ii] = float(erwartungquad[ii].split()[0])
     return erwartungquadval
 
-def readcalcwavefunc():
+def readcalcwavefunc(file):
     """The function reads out the wavefunctions, which are stored in the wavefunction.dat
        and passes it to arrays.
 
-    Return:
-         Returns an array with the wavefuntions as its content.
+    :rtype: array[float]
+    :returns: Returns the saved wavefunctions
     """
-    with open('wavefunction.dat', 'r') as ff:
+    with open(file, 'r') as ff:
         content_wavefunc = ff.readlines()
         wavefunc = []
     for line in content_wavefunc:
@@ -239,5 +239,3 @@ def readcalcwavefunc():
         for ii in range(0, len(wavefunc)):
             wavefuncval[ee][ii] = float(wavefunc[ii].split()[ee])
     return wavefuncval
-
-#print(readcalcwavefunc())

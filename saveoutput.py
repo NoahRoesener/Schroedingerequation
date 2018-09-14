@@ -10,10 +10,14 @@ import numpy as np
 def saveeigenvalues(eigenvalue, fvalue, lvalue):
     """Saves the calculated eigenvalues into a file
 
-    Args:
-        eigenValue: The container where the eigenvalues are stored in.
-        fvalue: The first eigenvalue to be saved.
-        lvalue: The last eigenvalue to be saved.
+    :type eigenvalue: array[float]
+    :param eigenvalue: calculated eigenvalues
+
+    :type fvalue: float
+    :param fvalue: first value to be saved
+
+    :type lvalue: float
+    :param lvalue: last value to be saved
     """
     eigenval = []
     for ii in range(fvalue, lvalue+1):
@@ -21,12 +25,28 @@ def saveeigenvalues(eigenvalue, fvalue, lvalue):
         eigenval.append(test)
     np.savetxt("energies.dat", eigenval, fmt='%s')
 
+def saveeigenvaluestest(eigenValue, fvalue, lvalue, path):
+     """Saves the calculated eigenvalues into a file for pytest.
+     Args:
+        eigenValue: The container where the eigenvalues are stored in.
+        fvalue: The first eigenvalue to be saved.
+        lvalue: The last eigenvalue to be saved.
+        path: Directory to be saved in.
+     """
+     chEigen = []
+     for ii in range(fvalue, lvalue+1):
+          test = eigenValue[ii]
+          chEigen.append(test)
+     np.savetxt(path, chEigen, fmt='%s')
+
 def savepotential(pot, xx):
     """Saves the calculated potential into a file
 
-    Args:
-        pot: The container where the calculated potentials are stored in.
-        x: The container where the x-coordinates are stored in.
+    :type pot: array[float]
+    :param pot: calculated potentials
+
+    :type xx: array[float]
+    :param xx: calculated x-values
     """
     potential = []
     coordinates = []
@@ -38,10 +58,11 @@ def savepotential(pot, xx):
 def saveexpvalues(erw, erwq):
     """ The function saves the erwartungsvalues and the squared erwartungsvalues.
 
-    Args:
-          erw: The container where the calculated erwartungsvalues are stored in.
-          erwq: The container where the calculated and squared erwartungsvalues
-               are stored in.
+    :type erw: array[float]
+    :param erw: calculated erwartungsvalues
+
+    :type erwq: array[float]
+    :param erwq: calculated squared erwartungsvalues
     """
     erwartung = np.zeros(len(erw))
     erwartungquad = np.zeros(len(erwq))
@@ -50,21 +71,32 @@ def saveexpvalues(erw, erwq):
         erwartungquad[ii] = erwq[ii]
     np.savetxt("expvalues.dat", np.transpose([erwartung, erwartungquad]), fmt='%s')
 
-def savePotentialtest(pot, x, path):
+def savepotentialtest(pot, xx, path):
      """Saves the calculated potential into a file for pytest.
-     Args:
-        pot: The container where the calculated potentials are stored in.
-        x: The container where the x-coordinates are stored in.
-        path: Directory to be saved in.
+
+     :type pot: array[float]
+     :param pot: calculated potential
+
+     :type xx: array[float]
+     :param xx: calculated x-values
+
+     :type path: string
+     :param path: path of the file
      """
      potential = []
      coordinates = []
      for ii in range(0, len(pot)):
-        coordinates.append(x[ii])
+        coordinates.append(xx[ii])
         potential.append(pot[ii])
      np.savetxt(path, np.transpose([coordinates, potential]))
 def savewavefunc(vec, xx):
-    """Moin
+    """The function saves the wavefunctions
+
+    :type vec: array[float]
+    :param vec: the calculated eigenvectors
+
+    :type xx: array[float]
+    :param xx: calculated x-values
 
     """
     x_shape = np.reshape(xx, (-1, 1))

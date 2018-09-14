@@ -9,9 +9,9 @@ import numpy as np
 from scipy import linalg as sclin
 from scipy.linalg import eigh_tridiagonal
 from scipy.interpolate import griddata
-import DataInput as di
+import datainput as di
 
-M = di.getmass() #mass of the object
+M = di.getmass()
 N = di.getnumofpoints()-1
 if di.getxmin() < 0:
     H = (abs(di.getxmin())+abs(di.getxmax()))/N
@@ -160,12 +160,14 @@ def erwartungquadrat(vec, numev, xx):
 def unschaerfe(erw, erwq):
     """The function calculates the unschaerfe
 
-    ARGS:
-        erw: The container where the erwartungwerte are stored in an array.
-        erwq: The array where the squared erwartungswerte are stored in.
+    :type erw: array[float]
+    :param erw: calculated erwartungsvalues
 
-    RETURN:
-         Returns the unschaerfe as an array.
+    :type erwq: array[float]
+    :param erwq: calculated squared erwartungsvalues
+
+    :rtype: array[float]
+    :returns: Returns an array with the unschaerfevalues
     """
     uns = np.sqrt(np.array(erwq)-np.array(erw)*np.array(erw))
     return uns

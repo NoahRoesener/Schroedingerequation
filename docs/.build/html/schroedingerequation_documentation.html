@@ -1,0 +1,841 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Schroedingerequation &#8212; schroedingerequation 16.09.2018 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="toctree-wrapper compound">
+</div>
+<div class="section" id="schroedingerequation">
+<h1>Schroedingerequation<a class="headerlink" href="#schroedingerequation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>This program solves the onedimensional schroedingerequation with given values from the input file
+<em>schroedinger.inp</em>. The input file includes given potentials, coordinates, the interpolation type, minimal
+and maximal coordinate values, specifications for the eigenvalues and the mass of the object. The program
+inclues the solver, which can be started from the main modul and the plotter, which plots the calculated values
+which are saved in files afterwards.</p>
+</div>
+<div class="section" id="input-and-output">
+<h2>Input and Output<a class="headerlink" href="#input-and-output" title="Permalink to this headline">¶</a></h2>
+<p>The program looks for the inputfile <em>schroedinger.inp</em>. If it is not there the program asks for the path of it.
+The inputfile has to have this syntax.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mf">4.0</span>           <span class="c1"># Mass</span>
+<span class="o">-</span><span class="mf">5.0</span> <span class="mf">5.0</span> <span class="mi">1999</span> <span class="c1"># xMin xMax nPoint</span>
+<span class="mi">1</span> <span class="mi">5</span>           <span class="c1"># first and last eigenvalue to include in the output</span>
+<span class="n">polynomial</span>    <span class="c1"># interpolation type</span>
+<span class="mi">3</span>             <span class="c1"># # nr. of interpolation points and xy declarations</span>
+<span class="o">-</span><span class="mf">1.0</span> <span class="mf">0.5</span>
+<span class="mf">0.0</span> <span class="mf">0.0</span>
+<span class="mf">1.0</span> <span class="mf">0.5</span>
+</pre></div>
+</div>
+<p>The calculations of the solver module are saved in files with this syntax. Afterwards the files are used in the plot-modul to plot it.</p>
+<ul>
+<li><p class="first"><em>potential.dat</em></p>
+<p>interpolated potential in XY-Format:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">x1</span> <span class="n">V</span><span class="p">(</span><span class="n">x1</span><span class="p">)</span>
+<span class="n">x2</span> <span class="n">V</span><span class="p">(</span><span class="n">x2</span><span class="p">)</span>
+<span class="p">:</span>    <span class="p">:</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first"><em>energies.dat</em></p>
+<p>calculated eigenvalues</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">E1</span>
+<span class="n">E2</span>
+<span class="n">E3</span>
+<span class="p">:</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first"><em>wavefuncs.dat</em></p>
+<p>calculated wavefunctions in NXY-Format</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">x1</span> <span class="n">wf1</span><span class="p">(</span><span class="n">x1</span><span class="p">)</span> <span class="n">wf2</span><span class="p">(</span><span class="n">x1</span><span class="p">)</span> <span class="n">wf3</span><span class="p">(</span><span class="n">x1</span><span class="p">)</span> <span class="o">...</span>
+<span class="n">x2</span> <span class="n">wf1</span><span class="p">(</span><span class="n">x2</span><span class="p">)</span> <span class="n">wf2</span><span class="p">(</span><span class="n">x2</span><span class="p">)</span> <span class="n">wf3</span><span class="p">(</span><span class="n">x2</span><span class="p">)</span> <span class="o">...</span>
+<span class="p">:</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first"><em>expvalues.dat</em></p>
+<p>expectation values and standard deviation</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">exp_1</span> <span class="n">qexp_1</span>
+<span class="n">exp_2</span> <span class="n">qexp_2</span>
+<span class="p">:</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="starting-options">
+<h2>Starting Options<a class="headerlink" href="#starting-options" title="Permalink to this headline">¶</a></h2>
+<p>Implemented starting options for the main modul and the plot modul</p>
+<div class="section" id="optional-parameters">
+<h3>Optional Parameters<a class="headerlink" href="#optional-parameters" title="Permalink to this headline">¶</a></h3>
+<ul>
+<li><p class="first">directory: -d [path]</p>
+<p>Used to specify the path of the input file <em>schroedinger.inp</em></p>
+</li>
+<li><p class="first">scale: -s [float]</p>
+<p>Scales the wavefunctions.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="modules">
+<h2>Modules<a class="headerlink" href="#modules" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="main-py">
+<h3>main.py<a class="headerlink" href="#main-py" title="Permalink to this headline">¶</a></h3>
+<p>Main module which, when started calculates the values and saves them in files.</p>
+</div>
+<div class="section" id="module-datainput">
+<span id="datainput-py"></span><h3>datainput.py<a class="headerlink" href="#module-datainput" title="Permalink to this headline">¶</a></h3>
+<p>Created on Wed Aug  8 20:52:36 2018</p>
+<p>&#64;author: noah</p>
+<dl class="function">
+<dt id="datainput.getfirsteigen">
+<code class="descclassname">datainput.</code><code class="descname">getfirsteigen</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#datainput.getfirsteigen" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function gets the number of the first eigenvalue that is to account.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">float</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Returns the number of the first eigenvalue</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="datainput.getlasteigen">
+<code class="descclassname">datainput.</code><code class="descname">getlasteigen</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#datainput.getlasteigen" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function gets the number of the last eigenvalue that is to account.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">float</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Returns the number of the last eigenvalue</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="datainput.getmass">
+<code class="descclassname">datainput.</code><code class="descname">getmass</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#datainput.getmass" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads out the mass from an array with many specifications.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">float</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Returns the mass of the object.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="datainput.getnumofpoints">
+<code class="descclassname">datainput.</code><code class="descname">getnumofpoints</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#datainput.getnumofpoints" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads out the amount of numbers to be calculated and plotted afterwards.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">float</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Returns the number of points to be calculated.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="datainput.getxmax">
+<code class="descclassname">datainput.</code><code class="descname">getxmax</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#datainput.getxmax" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads out the maximal x-value from an array with many specifications.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">float</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Returns the maximal x-value</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="datainput.getxmin">
+<code class="descclassname">datainput.</code><code class="descname">getxmin</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#datainput.getxmin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads out the minimal x-value from an array with many specifications.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">float</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Returns the minimall x-value</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="datainput.getxvalues">
+<code class="descclassname">datainput.</code><code class="descname">getxvalues</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#datainput.getxvalues" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function gets the given x-values from the schroedinger.inp.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">array[float]</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Returns the given x-value</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="datainput.getyvalues">
+<code class="descclassname">datainput.</code><code class="descname">getyvalues</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#datainput.getyvalues" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function gets the given y-values from the schroedinger.inp.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">array[float]</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Returns the given y-value</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="datainput.interpoints">
+<code class="descclassname">datainput.</code><code class="descname">interpoints</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#datainput.interpoints" title="Permalink to this definition">¶</a></dt>
+<dd><p>The functions gets the number of interpolationpoints from an array.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">float</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Returns number of interpolationpoints</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="datainput.interpolationtype">
+<code class="descclassname">datainput.</code><code class="descname">interpolationtype</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#datainput.interpolationtype" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function gets the interpolation type from an array.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">string</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Returns the interpolationtype</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="datainput.readcalceigenval">
+<code class="descclassname">datainput.</code><code class="descname">readcalceigenval</code><span class="sig-paren">(</span><em>file</em><span class="sig-paren">)</span><a class="headerlink" href="#datainput.readcalceigenval" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function reads out the calculated eigenvalues that are saved in a file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">array[float]</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Returns the saved eigenvalues</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="datainput.readcalcerwartung">
+<code class="descclassname">datainput.</code><code class="descname">readcalcerwartung</code><span class="sig-paren">(</span><em>file</em><span class="sig-paren">)</span><a class="headerlink" href="#datainput.readcalcerwartung" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function reads out the calculated erwartungsvalues that are saved in a file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">array[float]</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Returns the saved erwartungsvalues</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="datainput.readcalcerwartungquad">
+<code class="descclassname">datainput.</code><code class="descname">readcalcerwartungquad</code><span class="sig-paren">(</span><em>file</em><span class="sig-paren">)</span><a class="headerlink" href="#datainput.readcalcerwartungquad" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>The function reads out the calculated and squared erwartungsvalues</dt>
+<dd>that are saved in a file.</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">array[float]</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Returns the saved squared erwartungsvalues</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="datainput.readcalcpotential">
+<code class="descclassname">datainput.</code><code class="descname">readcalcpotential</code><span class="sig-paren">(</span><em>file</em><span class="sig-paren">)</span><a class="headerlink" href="#datainput.readcalcpotential" title="Permalink to this definition">¶</a></dt>
+<dd><p>The functon reads out the calculated potentials that are saved in a file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">array[float]</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Returns the saved potentials</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="datainput.readcalcwavefunc">
+<code class="descclassname">datainput.</code><code class="descname">readcalcwavefunc</code><span class="sig-paren">(</span><em>file</em><span class="sig-paren">)</span><a class="headerlink" href="#datainput.readcalcwavefunc" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>The function reads out the wavefunctions, which are stored in the wavefunction.dat</dt>
+<dd>and passes it to arrays.</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">array[float]</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Returns the saved wavefunctions</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="datainput.readcalcxvalue">
+<code class="descclassname">datainput.</code><code class="descname">readcalcxvalue</code><span class="sig-paren">(</span><em>file</em><span class="sig-paren">)</span><a class="headerlink" href="#datainput.readcalcxvalue" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function reads out the calculated x values that are saved in a file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">array[float]</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Returns the saved x-values</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-solver">
+<span id="solver-py"></span><h3>solver.py<a class="headerlink" href="#module-solver" title="Permalink to this headline">¶</a></h3>
+<p>Created on Sat Aug  4 17:31:10 2018</p>
+<p>&#64;author: eikegroen</p>
+<dl class="function">
+<dt id="solver.eigen">
+<code class="descclassname">solver.</code><code class="descname">eigen</code><span class="sig-paren">(</span><em>vx</em>, <em>vy</em>, <em>xx</em>, <em>inttype</em>, <em>fvalue</em>, <em>lvalue</em><span class="sig-paren">)</span><a class="headerlink" href="#solver.eigen" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function is calculating the eigenvalues and and eigenvectors.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>Vx</strong> (<em>[</em><em>float</em><em>]</em>) – x-values of the interpolation points</li>
+<li><strong>Vy</strong> (<em>[</em><em>float</em><em>]</em>) – y-values of the interpolation points</li>
+<li><strong>x</strong> (<em>np.array</em><em>(</em><em>float</em><em>)</em>) – x-values</li>
+<li><strong>inttype</strong> (<em>string</em>) – type of interpolation</li>
+<li><strong>fvalue</strong> (<em>int</em>) – first eigenvalue to be calculated</li>
+<li><strong>lvalue</strong> (<em>int</em>) – last eigenvalue to be calculated</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">(np.array(float),np.array(float))</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Returns a tuple with the the eigenvalues and and eigenvectors</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="solver.erwartung">
+<code class="descclassname">solver.</code><code class="descname">erwartung</code><span class="sig-paren">(</span><em>vec</em>, <em>numev</em>, <em>xx</em><span class="sig-paren">)</span><a class="headerlink" href="#solver.erwartung" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function is calculating the erwartungswert.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>vec</strong> (<em>np.array</em><em>(</em><em>float</em><em>)</em>) – np.array with eigenvectors</li>
+<li><strong>numev</strong> (<em>float</em>) – Number of eigenvectors</li>
+<li><strong>x</strong> (<em>np.array</em><em>(</em><em>float</em><em>)</em>) – x-values</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">np.array(float)</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Returns a np.array with expected values</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="solver.erwartungquadrat">
+<code class="descclassname">solver.</code><code class="descname">erwartungquadrat</code><span class="sig-paren">(</span><em>vec</em>, <em>numev</em>, <em>xx</em><span class="sig-paren">)</span><a class="headerlink" href="#solver.erwartungquadrat" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function is calculating the erwartungsquadrat.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>vec</strong> (<em>np.array</em><em>(</em><em>float</em><em>)</em>) – np.array with eigenvectors</li>
+<li><strong>numev</strong> (<em>float</em>) – Number of eigenvectors</li>
+<li><strong>x</strong> (<em>np.array</em><em>(</em><em>float</em><em>)</em>) – x-values</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">np.array(float)</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Returns a np.array with the squared expected values</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="solver.normalize">
+<code class="descclassname">solver.</code><code class="descname">normalize</code><span class="sig-paren">(</span><em>dd</em><span class="sig-paren">)</span><a class="headerlink" href="#solver.normalize" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function normalizes vectors.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>dd</strong> (<em>np.array</em><em>(</em><em>float</em><em>)</em>) – Vector</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">np.array(float)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Returns the normalized vector</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="solver.potential">
+<code class="descclassname">solver.</code><code class="descname">potential</code><span class="sig-paren">(</span><em>vx</em>, <em>vy</em>, <em>xx</em>, <em>inttype</em><span class="sig-paren">)</span><a class="headerlink" href="#solver.potential" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function is calculating the potential.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>Vx</strong> (<em>[</em><em>float</em><em>]</em>) – x-values of the interpolation points</li>
+<li><strong>Vy</strong> (<em>[</em><em>float</em><em>]</em>) – y-values of the interpolation points</li>
+<li><strong>x</strong> (<em>np.array</em><em>(</em><em>float</em><em>)</em>) – x-values</li>
+<li><strong>inttype</strong> (<em>string</em>) – type of interpolation</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">np.array(float)</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Returns a np.array with the y-values of the potential</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="solver.unschaerfe">
+<code class="descclassname">solver.</code><code class="descname">unschaerfe</code><span class="sig-paren">(</span><em>erw</em>, <em>erwq</em><span class="sig-paren">)</span><a class="headerlink" href="#solver.unschaerfe" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function calculates the unschaerfe</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>erw</strong> (<em>array</em><em>[</em><em>float</em><em>]</em>) – calculated erwartungsvalues</li>
+<li><strong>erwq</strong> (<em>array</em><em>[</em><em>float</em><em>]</em>) – calculated squared erwartungsvalues</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">array[float]</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Returns an array with the unschaerfevalues</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="plot-py">
+<h3>plot.py<a class="headerlink" href="#plot-py" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-inputtests">
+<span id="inputtests-py"></span><h3>inputtests.py<a class="headerlink" href="#module-inputtests" title="Permalink to this headline">¶</a></h3>
+<p>Created on Fri Sep 14 11:08:29 2018</p>
+<p>&#64;author: eikegroen</p>
+<dl class="function">
+<dt id="inputtests.eigen">
+<code class="descclassname">inputtests.</code><code class="descname">eigen</code><span class="sig-paren">(</span><em>vx</em>, <em>vy</em>, <em>xx</em>, <em>inttype</em>, <em>fvalue</em>, <em>lvalue</em>, <em>aa</em>, <em>nn</em><span class="sig-paren">)</span><a class="headerlink" href="#inputtests.eigen" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function is calculating the eigenvalues and and eigenvectors.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>vx</strong> (<em>[</em><em>float</em><em>]</em>) – x-values of the interpolation points</li>
+<li><strong>vy</strong> (<em>[</em><em>float</em><em>]</em>) – y-values of the interpolation points</li>
+<li><strong>xx</strong> (<em>np.array</em><em>(</em><em>float</em><em>)</em>) – x-values</li>
+<li><strong>inttype</strong> (<em>string</em>) – type of interpolation</li>
+<li><strong>fvalue</strong> (<em>int</em>) – first eigenvalue to be calculated</li>
+<li><strong>lvalue</strong> (<em>int</em>) – last eigenvalue to be calculated</li>
+<li><strong>aa</strong> (<em>float</em>) – constant for calculation</li>
+<li><strong>nn</strong> (<em>int</em>) – Number of values to be calculated</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">(np.array(float),np.array(float))</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Returns a tuple with the the eigenvalues and and eigenvectors</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="inputtests.getA">
+<code class="descclassname">inputtests.</code><code class="descname">getA</code><span class="sig-paren">(</span><em>datalines</em><span class="sig-paren">)</span><a class="headerlink" href="#inputtests.getA" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function gets a constant which is necessary for the calculations.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">float</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Returns the constant.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="inputtests.getfirsteigen">
+<code class="descclassname">inputtests.</code><code class="descname">getfirsteigen</code><span class="sig-paren">(</span><em>datalines</em><span class="sig-paren">)</span><a class="headerlink" href="#inputtests.getfirsteigen" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function gets the number of the first eigenvalue that is to account.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">float</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Returns the number of the first eigenvalue</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="inputtests.getlasteigen">
+<code class="descclassname">inputtests.</code><code class="descname">getlasteigen</code><span class="sig-paren">(</span><em>datalines</em><span class="sig-paren">)</span><a class="headerlink" href="#inputtests.getlasteigen" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function gets the number of the last eigenvalue that is to account.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">float</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Returns the number of the last eigenvalue</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="inputtests.getmass">
+<code class="descclassname">inputtests.</code><code class="descname">getmass</code><span class="sig-paren">(</span><em>datalines</em><span class="sig-paren">)</span><a class="headerlink" href="#inputtests.getmass" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads out the mass from an array with many specifications.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">float</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Returns the mass of the object.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="inputtests.getnumofpoints">
+<code class="descclassname">inputtests.</code><code class="descname">getnumofpoints</code><span class="sig-paren">(</span><em>datalines</em><span class="sig-paren">)</span><a class="headerlink" href="#inputtests.getnumofpoints" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads out the amount of numbers to be calculated and plotted afterwards.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">float</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Returns the number of points to be calculated.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="inputtests.getxmax">
+<code class="descclassname">inputtests.</code><code class="descname">getxmax</code><span class="sig-paren">(</span><em>datalines</em><span class="sig-paren">)</span><a class="headerlink" href="#inputtests.getxmax" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads out the maximal x-value from an array with many specifications.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">float</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Returns the maximal x-value</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="inputtests.getxmin">
+<code class="descclassname">inputtests.</code><code class="descname">getxmin</code><span class="sig-paren">(</span><em>datalines</em><span class="sig-paren">)</span><a class="headerlink" href="#inputtests.getxmin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads out the minimal x-value from an array with many specifications.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">float</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Returns the minimall x-value</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="inputtests.getxvalues">
+<code class="descclassname">inputtests.</code><code class="descname">getxvalues</code><span class="sig-paren">(</span><em>datalines</em><span class="sig-paren">)</span><a class="headerlink" href="#inputtests.getxvalues" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function gets the given x-values from the schroedinger.inp.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">array[float]</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Returns the given x-value</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="inputtests.getyvalues">
+<code class="descclassname">inputtests.</code><code class="descname">getyvalues</code><span class="sig-paren">(</span><em>datalines</em><span class="sig-paren">)</span><a class="headerlink" href="#inputtests.getyvalues" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function gets the given y-values from the schroedinger.inp.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">array[float]</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Returns the given y-value</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="inputtests.interpoints">
+<code class="descclassname">inputtests.</code><code class="descname">interpoints</code><span class="sig-paren">(</span><em>datalines</em><span class="sig-paren">)</span><a class="headerlink" href="#inputtests.interpoints" title="Permalink to this definition">¶</a></dt>
+<dd><p>The functions gets the number of interpolationpoints from an array.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">float</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Returns number of interpolationpoints</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="inputtests.interpolationtype">
+<code class="descclassname">inputtests.</code><code class="descname">interpolationtype</code><span class="sig-paren">(</span><em>datalines</em><span class="sig-paren">)</span><a class="headerlink" href="#inputtests.interpolationtype" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function gets the interpolation type from an array.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">string</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Returns the interpolationtype</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="inputtests.reader">
+<code class="descclassname">inputtests.</code><code class="descname">reader</code><span class="sig-paren">(</span><em>file</em><span class="sig-paren">)</span><a class="headerlink" href="#inputtests.reader" title="Permalink to this definition">¶</a></dt>
+<dd><p>The functions reads out the input file</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>file</strong> (<em>string</em>) – the name of the input file</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">array[]</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">an array with input values</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="#">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Schroedingerequation</a><ul>
+<li><a class="reference internal" href="#introduction">Introduction</a></li>
+<li><a class="reference internal" href="#input-and-output">Input and Output</a></li>
+<li><a class="reference internal" href="#starting-options">Starting Options</a><ul>
+<li><a class="reference internal" href="#optional-parameters">Optional Parameters</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#modules">Modules</a><ul>
+<li><a class="reference internal" href="#main-py">main.py</a></li>
+<li><a class="reference internal" href="#module-datainput">datainput.py</a></li>
+<li><a class="reference internal" href="#module-solver">solver.py</a></li>
+<li><a class="reference internal" href="#plot-py">plot.py</a></li>
+<li><a class="reference internal" href="#module-inputtests">inputtests.py</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="#">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Noah Roesener, Eike Groen.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

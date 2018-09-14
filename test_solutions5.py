@@ -1,38 +1,42 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Fri Sep 14 16:17:51 2018
+Created on Fri Sep 15 16:17:51 2018
 
 @author: eikegroen
 """
 
-import DataInput as di
+import datainput as di
 import solver as slv
-import saveOutput as so
+import saveoutput as so
 import numpy as np
-import Inputtests as it
-datalines5=it.reader('input_files/Schroedinger5.inp')
-start5 = it.getXMin(datalines5)
-stop5 = it.getXMax(datalines5)
-n5 = it.getNumOfPoints(datalines5)-1
-x5=np.linspace(start5, stop5, n5+1)
-inttype5 = it.interpolationType(datalines5) #type of interpolation
-A5=it.getA(datalines5)
-Vx5 =np.asarray_chkfinite(it.getXValues(datalines5), dtype=np.float64, order='C')
-Vy5 = np.asarray_chkfinite(it.getYValues(datalines5), dtype=np.float64, order='C')
-fvalue5=it.getFirstEigen(datalines5)-1
-lvalue5=it.getLastEigen(datalines5)-1
-numev5=lvalue5-fvalue5
-aa5=it.Eigen(Vx5, Vy5, x5, inttype5, fvalue5, lvalue5,A5,n5)
-eival5=aa5[0]
-so.saveEigenvaluestest(eival5 , fvalue5, lvalue5,'testfiles/energietest5.dat')
-so.savePotentialtest(slv.Potential(Vx5, Vy5, x5, inttype5), x5,'testfiles/potentialtest5.dat')
+import inputtests as it
+DATALINES5 = it.reader('input_files/Schroedinger5.inp')
+START5 = it.getxmin(DATALINES5)
+STOP5 = it.getxmax(DATALINES5)
+N5 = it.getnumofpoints(DATALINES5)-1
+X5 = np.linspace(START5, STOP5, N5+1)
+INTTYPE5 = it.interpolationtype(DATALINES5) #type of interpolation
+A5 = it.getA(DATALINES5)
+VX5 = np.asarray_chkfinite(it.getxvalues(DATALINES5), dtype=np.float64, order='C')
+VY5 = np.asarray_chkfinite(it.getyvalues(DATALINES5), dtype=np.float64, order='C')
+FVALUE5 = it.getfirsteigen(DATALINES5)-1
+LVALUE5 = it.getlasteigen(DATALINES5)-1
+NUMEV5 = LVALUE5-FVALUE5
+AA5 = it.eigen(VX5, VY5, X5, INTTYPE5, FVALUE5, LVALUE5, A5, N5)
+EIVAL5 = AA5[0]
+so.saveeigenvaluestest(EIVAL5, FVALUE5, LVALUE5, 'testfiles/energietest5.dat')
+so.savepotentialtest(slv.potential(VX5, VY5, X5, INTTYPE5), X5, 'testfiles/potentialtest5.dat')
 def test_potential():
-    refpot5=di.readCalcPotential('reference_files/potential5.dat')
-    pot5=di.readCalcPotential('testfiles/potentialtest5.dat')
-    assert np.all(pot5-refpot5<0.01)
-    
+    """The funtion tests the potential
+    """
+    refpot5 = di.readcalcpotential('reference_files/potential5.dat')
+    pot5 = di.readcalcpotential('testfiles/potentialtest5.dat')
+    assert np.all(pot5-refpot5 < 0.01)
+
 def test_energies():
-    refenergies5=di.readCalcEigenval('reference_files/energies5.dat')
-    energies5=di.readCalcEigenval('testfiles/energietest5.dat')
-    assert np.all(refenergies5-energies5<0.01 )
+    """The function tests the energies
+    """
+    refenergies5 = di.readcalceigenval('reference_files/energies5.dat')
+    energies5 = di.readcalceigenval('testfiles/energietest5.dat')
+    assert np.all(refenergies5-energies5 < 0.01)
