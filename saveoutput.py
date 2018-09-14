@@ -50,7 +50,19 @@ def saveexpvalues(erw, erwq):
         erwartungquad[ii] = erwq[ii]
     np.savetxt("expvalues.dat", np.transpose([erwartung, erwartungquad]), fmt='%s')
 
-
+def savePotentialtest(pot, x, path):
+     """Saves the calculated potential into a file for pytest.
+     Args:
+        pot: The container where the calculated potentials are stored in.
+        x: The container where the x-coordinates are stored in.
+        path: Directory to be saved in.
+     """
+     potential = []
+     coordinates = []
+     for ii in range(0, len(pot)):
+        coordinates.append(x[ii])
+        potential.append(pot[ii])
+     np.savetxt(path, np.transpose([coordinates, potential]))
 def savewavefunc(vec, xx):
     """Moin
 

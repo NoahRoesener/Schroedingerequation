@@ -38,9 +38,9 @@ FVALUE = di.getfirsteigen()-1 #first eigenvalue
 LVALUE = di.getlasteigen()-1 #last eigenvalue
 NUMEV = LVALUE-FVALUE
 
-EIVA, EIVE = slv.Eigen(VX, VY, X, INTTYPE, FVALUE, LVALUE)
-so.saveexpvalues(slv.Erwartung(EIVE, NUMEV, X), slv.Erwartungquadrat(EIVE, NUMEV, X))
+EIVA, EIVE = slv.eigen(VX, VY, X, INTTYPE, FVALUE, LVALUE)
+so.saveexpvalues(slv.erwartung(EIVE, NUMEV, X), slv.erwartungquadrat(EIVE, NUMEV, X))
 so.saveeigenvalues(EIVA, FVALUE, LVALUE)
-so.savepotential(slv.Potential(VX, VY, X, INTTYPE), X)
+so.savepotential(slv.potential(VX, VY, X, INTTYPE), X)
 so.savewavefunc(EIVE, X)
 

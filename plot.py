@@ -23,7 +23,7 @@ NUMEV = LVALUE-FVALUE #number of eigenvector
 ERWQ = di.readcalcerwartungquad() #squared expected value
 ERW = di.readcalcerwartung() #expected value
 UNSCHAERFE = slv.unschaerfe(ERW, ERWQ) #unschaerfe
-EIVA, EIVE = slv.Eigen(VX, VY, X, INTTYPE, FVALUE, LVALUE) #eigenvalues and eigenvectors
+EIVA, EIVE = slv.eigen(VX, VY, X, INTTYPE, FVALUE, LVALUE) #eigenvalues and eigenvectors
 
 
 
